@@ -30,4 +30,5 @@ jobs:
         python manage.py migrate
     - name: Run Django Test Suite
       run: |
+        cd prodavnicesajt
         python manage.py test prodavnice.tests --noinput
