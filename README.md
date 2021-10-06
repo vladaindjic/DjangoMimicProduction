@@ -6,4 +6,6 @@ In order to run provided Django test suite, run the command:
 $ cd prodavnicesajt
 $ python manage.py test prodavnice.tests --noinput
 ```
-Option --noinput automatically destroys the test database before each run.
+Option `--noinput` automatically destroys the test database before each run.
+
+Check README.txt to see how to run the Django app itself.
