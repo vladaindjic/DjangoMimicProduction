@@ -1,11 +1,22 @@
 # Auth and Tests in Django
-Simple Django application that uses Django auth system and contains simple test suite.
+This repo introduces a simple web-application that uses Django auth system and 
+contains a simple test suite.
 
-In order to run provided Django test suite, run the command:
+## Django Auth System
+The default Django authentication system has been used to provide user 
+authentication and authorization on a few places in the app (see 
+kasa\_view.py for the demo).
+
+## Django Tests
+In order to run provided Django test suite, run the following commands:
 ```console
 $ cd prodavnicesajt
 $ python manage.py test prodavnice.tests --noinput
 ```
 Option `--noinput` automatically destroys the test database before each run.
 
-Check README.txt to see how to run the Django app itself.
+Follow the instructions in the README.txt document in order to build and run 
+the Django app itself.
+
+## CI
+This repo specifies a Django workflow that enables some sort of basic CI/CD.
