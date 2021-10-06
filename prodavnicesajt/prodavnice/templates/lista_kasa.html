@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block links %}
+    <ul>
+        <li><a href="{% url 'unos_kase' %}">Unesi kasu</a></li>
+    </ul>
+{% endblock %}
+{% block content %}
+{% if kase|length > 0 %}
+    <table>
+      <tr>
+        <th>Oznaka</th>
+        <th>Naziv</th>
+        <th>Radi</th>
+        <th>Prodavnica</th>
+        <th>Izmena</th>
+      </tr>
+    {% for k in kase %}
+      <tr>
+        <td>{{k.oznaka}}</td>
+        <td>{{k.naziv}}</td>
+        <td>{{k.radi}}</td>
+        <td>{{k.prodavnica.naziv}}</td>
+        <td><a href="{% url 'unos_kase_p' id=k.id %}">Izmeni</a></td>
+      </tr>
+    {% endfor %}
+    </table>
+{% else %}
+   <p>Nema kasa za prikaz</p>
+{% endif %}
+{% endblock %}
