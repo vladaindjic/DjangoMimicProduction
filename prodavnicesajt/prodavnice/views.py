@@ -6,7 +6,6 @@ from .models import Kategorija
 
 def index(request):
     title = apps.get_app_config('prodavnice').verbose_name
-    print(title)
     return render(request, 'index.html', {"title": title})
 
 

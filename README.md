@@ -48,3 +48,23 @@ docker run --name djangoappcont -d -p 8000:8000 vladaindjic/simple-django-app
 ### Some more docker examples and useful docker links:
 - [Flask app in docker container that introduces volumes](https://github.com/MilosSimic/First-Docker-app?fbclid=IwAR2aUNHOLNqPL4K3wLYYIhtB7LxT0VRDOAQNyjBeOyHLRox7QC9SENEuhEA)
 - [removing containers, images, volumes](https://www.digitalocean.com/community/tutorials/how-to-remove-docker-images-containers-and-volumes)
+
+
+### Access to postgres db
+The following command can be used to investigate the pg db.
+```console
+# enter the container
+docker exec -it myapp_db bash
+# authenticate as pg user
+psql -h localhost -p 5432 -U postgres -W
+# enter password
+# to list tables 
+\d 
+# see what it is an arbitraty table
+SELECT * FROM prodavnice_kasa;
+```
+
+It is possible to force recreating some service
+```console
+docker-compose up --build --force-recreate web  
+```
