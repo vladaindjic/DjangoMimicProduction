@@ -1,4 +1,4 @@
-v# Auth and Tests in Django
+# Auth and Tests in Django
 This repo introduces a simple web-application that uses Django auth system and 
 contains a simple test suite.
 
