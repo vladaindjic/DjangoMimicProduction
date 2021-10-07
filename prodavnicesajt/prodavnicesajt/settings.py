@@ -73,12 +73,12 @@ WSGI_APPLICATION = 'prodavnicesajt.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        # custom name for testing db
-        'TEST': {
-            'NAME': 'testdb'
-        }
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+        'HOST': 'db',
+        'PORT': 5432,
     }
 }
 
@@ -116,8 +116,40 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
+# See the difference between STATIC_URL and STATIC_ROOT
+# (https://stackoverflow.com/questions/37716200/whats-the-difference-between-static-url-and-static-root-in-django)
+# Note that the "prodavnice" app was inherited. I found out it was initially bad designed,
+# because templates and static files are put directly under templates/ and static/ directory respectively.
+# What django documentation and tutorial recommends is the following:
+# - templates should reside in templates/prodavnice/
+# - while static files should be put in static/prodavnice.
+# (https://docs.djangoproject.com/en/3.2/intro/tutorial03/)
+# However, it was a bit painful to refactor this, so I'm sorry for the inconvenience.
 STATIC_URL = '/static/'
+# The root folder that provides static files for the deployment.
+# To put all static files here, run the following command:
+# python manage.py collectstatic --noinput
+STATIC_ROOT = '../static/'
 
 # automatski generise kljuc
 # (https://stackoverflow.com/questions/66971594/auto-create-primary-key-used-when-not-defining-a-primary-key-type-warning-in-dja)
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+# !!! HACK !!!
+# The initial idea was to use sqlite for testing and postgres for "production".
+# To do this, prepend UKS_TEST_DB before linux command.
+# Linux tested... Not guaranteed for others.
+# https://stackoverflow.com/questions/4650509/different-db-for-testing-in-django/4650651#4650651
+use_testdb = os.environ.get('UKS_TEST_DB', '')
+if use_testdb == 'ON':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            # custom name for testing db
+            'TEST': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': os.path.join(BASE_DIR, 'testdb.sqlite3'),
+            }
+        }
+    }

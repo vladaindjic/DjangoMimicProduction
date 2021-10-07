@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ master ]
 
+# use sqlite as testdb
+env:
+  UKS_TEST_DB: ON
+
 jobs:
   build:
 
