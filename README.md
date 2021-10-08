@@ -1,70 +1,71 @@
-# Auth and Tests in Django
-This repo introduces a simple web-application that uses Django auth system and 
-contains a simple test suite.
+# Django Web App - Mimic Production
+This repo mimics production environment in which Django app runs.
 
-## Django Auth System
-The default Django authentication system has been used to provide user 
-authentication and authorization on a few places in the app (see 
-kasa\_view.py for the demo).
-
-## Django Tests
-In order to run provided Django test suite, run the following commands:
+## Setup and run the environment
+To setup the environment and run the Django app, execute the following command:
 ```console
-cd prodavnicesajt
-python manage.py test prodavnice.tests --noinput
+docker-compose up
 ```
-Option `--noinput` automatically destroys the test database before each run.
+As the result, the following happens:
+- PostgreSQL db runs in myapp_db container
+- NGINX run as a reverse proxy inside myapp_nginx container
+- Redis runs as mem-cache for the django app inside myapp_redis container
+- finally Gunicorn server executes the Django app inside myapp_web container
 
-Follow the instructions in the README.txt document in order to build and run 
-the Django app itself.
+To use the app, send requests to `127.0.0.1:8083`.
+
+Press `CTRL+C` once and wait untill all containers are stopped gracefully.
+If you're impatient, press `CTRL+C` twice.
 
 ## CI
 This repo specifies a Django workflow that enables some sort of basic CI/CD.
-
-## Containerize the App
-This app can be containerized by using the docker.
-
-### Docker installation
-This document assumes that the docker is preinstalled on your system. 
-If not, follow [the official documentation](https://docs.docker.com/get-docker/)
-
-### Run from local build
-Build the docker image:
-```console
-docker build -t djangoapp:latest .
-```
-
-Run the docker container locally
-```console
-docker run --name djangoappcont -d -p 8000:8000 djangoapp
-```
-
-### Run from DockerHub
-Run the docker container from the DockerHub
-```console
-docker run --name djangoappcont -d -p 8000:8000 vladaindjic/simple-django-app
-```
-
-### Some more docker examples and useful docker links:
-- [Flask app in docker container that introduces volumes](https://github.com/MilosSimic/First-Docker-app?fbclid=IwAR2aUNHOLNqPL4K3wLYYIhtB7LxT0VRDOAQNyjBeOyHLRox7QC9SENEuhEA)
-- [removing containers, images, volumes](https://www.digitalocean.com/community/tutorials/how-to-remove-docker-images-containers-and-volumes)
+In this case, Django app uses separate test sqlite db.
 
 
-### Access to postgres db
-The following command can be used to investigate the pg db.
+## Monitoring Containers Separately
+
+### Access to PostgreSQL DB
+The following command can be used to investigate the PostgreSQL db.
 ```console
 # enter the container
 docker exec -it myapp_db bash
-# authenticate as pg user
+# authenticate as pg user (enter password)
 psql -h localhost -p 5432 -U postgres -W
-# enter password
-# to list tables 
+# listing tables 
 \d 
-# see what it is an arbitraty table
+# see the content of an arbitraty table
 SELECT * FROM prodavnice_kasa;
 ```
 
-It is possible to force recreating some service
+### Access to Redis mem-cache
+To investigate the content of Redis mem-cache, execute the following commands:
 ```console
-docker-compose up --build --force-recreate web  
+# enter redi container
+docker exec -it myapp_redis bash
+# use redis-cli to inspect
+redis-cli
+# check cache size
+dbsize
+# list all keys
+keys *
+# flush all cached keys
+FLUSHALL
 ```
+
+### Other useful docker-compose commands
+
+It is possible to order the docker-compose to build myapp_web the container :
+```console
+docker-compose up --build
+```
+If all containers should be recreated, then execute:
+```console
+docker-compose up --build --force-recreate
+```
+
+To see more information about docker-compose, check 
+[the official documentation](https://docs.docker.com/compose/).
+
+An interesting example that uses docker-compose and introduces log monitoring
+can be found [here](https://github.com/MilosSimic/logging-app).
+
