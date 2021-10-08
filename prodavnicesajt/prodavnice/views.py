@@ -1,11 +1,10 @@
 from django.apps.registry import apps
-from django.shortcuts import render, get_list_or_404
+from django.conf import settings
+from django.core.cache.backends.base import DEFAULT_TIMEOUT
+from django.shortcuts import render
+from django.views.decorators.cache import cache_page
 
 from .models import Kategorija
-
-from django.conf import settings
-from django.views.decorators.cache import cache_page
-from django.core.cache.backends.base import DEFAULT_TIMEOUT
 
 CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 

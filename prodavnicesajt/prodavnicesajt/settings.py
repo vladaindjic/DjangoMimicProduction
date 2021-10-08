@@ -131,28 +131,6 @@ STATIC_URL = '/static/'
 # python manage.py collectstatic --noinput
 STATIC_ROOT = '../static/'
 
-# use redis as a cache
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://redis:6379",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient"
-        },
-        "KEY_PREFIX": "uks"
-    }
-}
-
-# Cache time to live is 15 minutes.
-CACHE_TTL = 60 * 15
-# store session in cache
-SESSION_ENGINE = "django.contrib.sessions.backends.cache"
-SESSION_CACHE_ALIAS = "default"
-# Note that caching is done only for sessions.
-# If the views should be cached too, then check how to do this
-# by introspecting the prodavnice_view.lista_prodavnica.
-
-
 # automatski generise kljuc
 # (https://stackoverflow.com/questions/66971594/auto-create-primary-key-used-when-not-defining-a-primary-key-type-warning-in-dja)
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
@@ -175,3 +153,24 @@ if use_testdb == 'ON':
             }
         }
     }
+else:
+    # use redis as a cache in production
+    CACHES = {
+        "default": {
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "redis://redis:6379",
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient"
+            },
+            "KEY_PREFIX": "uks"
+        }
+    }
+
+    # Cache time to live is 15 minutes.
+    CACHE_TTL = 60 * 15
+    # store session in cache
+    SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+    SESSION_CACHE_ALIAS = "default"
+    # Note that caching is done only for sessions.
+    # If the views should be cached too, then check how to do this
+    # by introspecting the views.lista_kategorija.
