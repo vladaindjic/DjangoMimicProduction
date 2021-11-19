@@ -1,0 +1,14 @@
+#+title: Docker i Docker Compose
+#+author: Vladmir Inđić
+#+OPTIONS: date:nil
+#+OPTIONS: toc:nil
+
+Današnji termin vežbi služi kao pregled alata za kontejnerizaciju i orkestraciju.
+Studenti bi trebalo da se upoznaju sa radom sledećih alata:
+- [[https://github.com/vladaindjic/SCM-exchange-students#docker][Docker]]
+- [[https://github.com/vladaindjic/SCM-exchange-students#docker-hub][Docker Hub]]
+- [[https://github.com/vladaindjic/SCM-exchange-students#docker-compose][Docker Compose]].
+
+Primeri upotrebe ovih alata mogu se pronaći na sledećim repozitorijumima:
+- [[https://github.com/vladaindjic/DjangoAuthTests][Upotreba Docker i Docker Hub alata]]
+- [[https://github.com/vladaindjic/DjangoMimicProduction][Upotreba Docker Compose alata]].
