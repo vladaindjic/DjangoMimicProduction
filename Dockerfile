@@ -1,4 +1,5 @@
-FROM python:3
+# NOTE: psycopg2 has some problems with python 3.11
+FROM python:3.10
 ENV PYTHONUNBUFFERED 1
 
 # setup working directory
@@ -13,7 +14,6 @@ RUN pip install --upgrade pip
 RUN pip uninstall psycopg2
 RUN pip install --upgrade wheel
 RUN pip install --upgrade setuptools
-RUN pip install -r requirements.txt
 # installing requirements
 RUN pip install -r requirements.txt
 # make these scripts executables
